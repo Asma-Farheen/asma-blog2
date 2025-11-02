@@ -1,6 +1,6 @@
 {
-  "name": "structure-blog",
-  "version": "0.0.0",
+  "name": "farheen-blog",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "next build",
