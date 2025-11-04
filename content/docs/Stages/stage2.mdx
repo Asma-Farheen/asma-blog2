@@ -1,22 +1,80 @@
 ---
 title: "Part 2 — React Hooks with Practical Examples"
-description: "A complete guide to commonly used React Hooks like useState, useEffect, useContext, useRef, useMemo, and useCallback with examples."
+description: "Learn React Hooks like useState, useEffect, useContext, useRef, useMemo, and useCallback with consistent examples and explanations."
 ---
 
 # ⚙️ Part 2 — React Hooks with Practical Examples
 
-React Hooks are built-in functions that let you use React features such as **state**, **lifecycle events**, and **context** without writing class components.  
-They make React simpler, more functional, and reusable.
+React Hooks are built-in functions that let you use React features like **state**, **effects**, and **context** directly in functional components.  
+They make React simpler and more reusable.
 
 ---
 
 ## 🔹 useState — Manage Local State
 
-`useState` allows a component to remember values between renders.
+`useState` lets a component remember and update values between renders.  
+It’s used to manage local data like counters, forms, or toggles.
 
 **Example:**
 ```js
-const [count, setCount] = useState(0);
+import { useState, useEffect, useContext, createContext, useRef, useMemo, useCallback } from "react";
 
-// Update the value
-setCount(count + 1);
+function HooksExample() {
+  // useState — Manage Local State
+  const [count, setCount] = useState(0);
+  const [number, setNumber] = useState(5);
+
+  // Update the value
+  setCount(count + 1);
+
+  // 🔹 useEffect — Handle Side Effects
+  useEffect(() => {
+    console.log("Component mounted or updated");
+  }, []);
+
+  useEffect(() => {
+    document.title = `Clicked ${count} times`;
+  }, [count]);
+
+  // 🔹 useContext — Share Data Without Props
+  const ThemeContext = createContext("light");
+  const theme = useContext(ThemeContext);
+
+  // 🔹 useRef — Access DOM or Store Persistent Values
+  const inputRef = useRef();
+  const renderCount = useRef(0);
+  renderCount.current += 1;
+
+  function focusInput() {
+    inputRef.current.focus();
+  }
+
+  // 🔹 useMemo — Optimize Expensive Calculations
+  const factorial = useMemo(() => {
+    let result = 1;
+    for (let i = 1; i <= number; i++) {
+      result *= i;
+    }
+    return result;
+  }, [number]);
+
+  // 🔹 useCallback — Cache Functions for Performance
+  const increment = useCallback(() => {
+    setCount(c => c + 1);
+  }, []);
+
+  return (
+    <div>
+      <h2>React Hooks Example</h2>
+      <p>Current Count: {count}</p>
+      <p>Factorial of {number}: {factorial}</p>
+      <p>Theme from Context: {theme}</p>
+      <input ref={inputRef} placeholder="Focus me using Ref" />
+      <p>Render Count: {renderCount.current}</p>
+
+      <button onClick={increment}>Increment Count</button>
+      <button onClick={() => setNumber(n => n + 1)}>Increase Number</button>
+      <button onClick={focusInput}>Focus Input</button>
+    </div>
+  );
+}
